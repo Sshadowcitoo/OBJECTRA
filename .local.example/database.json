@@ -1,0 +1,7 @@
+{
+  "DB_NAME": "objectra",
+  "DB_USER": "objectra",
+  "DB_PASSWORD": "REEMPLAZAR_SOLO_EN_TU_PC",
+  "DB_HOST": "127.0.0.1",
+  "DB_PORT": "5432"
+}
