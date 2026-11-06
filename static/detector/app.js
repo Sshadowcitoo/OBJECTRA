@@ -4,6 +4,7 @@ const colors = ['#438d78', '#b14f62', '#bd9346', '#657cb1', '#9774a4'];
 const qualitySizes = {fast: 320, balanced: 480, detail: 640};
 const qualityLabels = {fast: 'Rápido', balanced: 'Equilibrado', detail: 'Detalle'};
 let stream = null, running = false, busy = false, token = null, generation = 0;
+let saving = false;
 let originalUrl = null;
 let quality = 'fast', boxes = [], clearBoxesTimer = null, controller = null, activeQuality = null;
 
@@ -70,13 +71,18 @@ function drawBoxes() {
   }
 }
 
+function updateSaveButtons() {
+  const disabled = saving || !token;
+  $id('save').disabled = disabled;
+  $id('snapshot').disabled = disabled;
+}
+
 function resetResults() {
   token = null; 
   boxes = []; 
   clearTimeout(clearBoxesTimer); 
   drawBoxes();
-  $id('save').disabled = true; 
-  $id('snapshot').disabled = true; 
+  updateSaveButtons();
   $id('save-note').hidden = true;
   $id('count').textContent = '0'; 
   $id('result-total').textContent = '0';
@@ -235,8 +241,7 @@ async function analyze(blob, currentGeneration, source = 'upload') {
     $id('analysis-rate').textContent = `${(1000 / Math.max(1, elapsed)).toFixed(1)} análisis/s · ${qualityLabels[requestedQuality]}`;
 
     token = result.can_save ? result.token : null;
-    $id('save').disabled = !token; 
-    $id('snapshot').disabled = !token;
+    updateSaveButtons();
     $id('save-note').hidden = Boolean(token); 
     $id('back-welcome').hidden = false;
     activeQuality = requestedQuality;
@@ -421,10 +426,10 @@ async function loadExample() {
 }
 
 async function saveResult() {
-  if (!token) return;
-  const selectedToken = token; 
-  $id('save').disabled = true; 
-  $id('snapshot').disabled = true;
+  if (saving || !token) return;
+  const selectedToken = token;
+  saving = true;
+  updateSaveButtons();
 
   try { 
     const data = new FormData(); 
@@ -434,8 +439,8 @@ async function saveResult() {
   } catch (error) { 
     status(error.message); 
   } finally { 
-    $id('save').disabled = !token; 
-    $id('snapshot').disabled = !token; 
+    saving = false;
+    updateSaveButtons();
   }
 }
 
