@@ -1,10 +1,13 @@
-# Modelos previstos para OBJECTRA
+# Modelos de OBJECTRA
 
-La integración del detector corresponde a la siguiente etapa de JHOAN. Los modelos reutilizados de EVA se distribuyen aparte del repositorio; no se suben pesos ni entornos virtuales.
+OBJECTRA usa exportaciones OpenVINO de YOLO11s-seg sobre COCO. Para ejecutar el código de este repositorio, coloca las exportaciones que distribuye el equipo directamente en `models/`.
 
-Exportaciones de referencia:
-- Rápido 320: `yolo11s-seg-eva-320_openvino_model`.
-- Equilibrado 480: `yolo11s-seg-eva-480_openvino_model`.
-- Detalle 640: `yolo11s-seg_openvino_model`.
+| Calidad | Entrada | Carpeta |
+| --- | --- | --- |
+| Rápido | 320 × 320 | `yolo11s-seg-eva-320_openvino_model` |
+| Equilibrado | 480 × 480 | `yolo11s-seg-eva-480_openvino_model` |
+| Detalle | 640 × 640 | `yolo11s-seg_openvino_model` |
 
-Cada carpeta conserva sus archivos `.xml`, `.bin` y `metadata.yaml`. Son pesos YOLO11s-seg sobre COCO exportados a OpenVINO. Conservar atribución y revisar las condiciones de su licencia AGPL-3.0 antes de distribuirlos.
+Cada carpeta debe contener `metadata.yaml` y el par de archivos `.xml` y `.bin` de la misma exportación. `YOLO_MODEL_PATH` permite cambiar la ruta de Rápido. Las demás rutas se definen en `QUALITY_MODELS` en [config/settings.py](../config/settings.py).
+
+La copia de referencia del equipo incluye las tres exportaciones procedentes de EVA. El paquete de demo de Windows preparado inicialmente incluye exportaciones equivalentes en resolución a partir del checkpoint oficial de Ultralytics. Consulta el README incluido en cada paquete para identificar los pesos que contiene. Los modelos se distribuyen aparte del código en Git. Conserva la atribución y la documentación de licencia que acompañan a los pesos.
