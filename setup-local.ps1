@@ -37,7 +37,7 @@ function Install-Package([string]$Id, [string[]]$Options) {
     }
     & winget install --id $Id --exact --source winget --silent --no-upgrade --accept-package-agreements --accept-source-agreements @Options
     # WinGet reports this code when the installed package already meets the request.
-    if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne -1978335189) {
+    if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne -1978335135) {
         throw "No se pudo instalar $Id (codigo $LASTEXITCODE)."
     }
 }
