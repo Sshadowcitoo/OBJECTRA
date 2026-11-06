@@ -2,6 +2,8 @@
 
 La integración del detector corresponde a la siguiente etapa de JHOAN. Los modelos reutilizados de EVA se distribuyen aparte del repositorio; no se suben pesos ni entornos virtuales.
 
+El instalador de Windows genera las exportaciones que falten con los pesos oficiales YOLO11s-seg de Ultralytics. Si ya están las exportaciones de EVA, las reutiliza.
+
 Exportaciones de referencia:
 - Rápido 320: `yolo11s-seg-eva-320_openvino_model`.
 - Equilibrado 480: `yolo11s-seg-eva-480_openvino_model`.

@@ -1,15 +1,15 @@
 """Prepare the local PostgreSQL configuration and validate model exports."""
 
 import argparse
-import getpass
 import json
 import os
 import shutil
+import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from urllib.request import urlretrieve
 
 import psycopg
-from psycopg import sql
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / ".local" / "database.json"
@@ -28,27 +28,48 @@ def model_ready(folder):
 
 
 def prepare_models(source):
-    missing = []
-    for name in MODELS:
+    pending = []
+    for name, size in zip(MODELS, (320, 480, 640), strict=True):
         destination = ROOT / "models" / name
-        if not destination.exists() and source and model_ready(source / name):
-            with TemporaryDirectory(dir=destination.parent) as temporary:
-                staged = Path(temporary) / name
+        if model_ready(destination):
+            continue
+        if destination.exists():
+            raise SystemExit(f"Exportación incompleta en {destination}. Corrígela o muévela para continuar.")
+        if source and not model_ready(source / name):
+            raise SystemExit(f"No se encontró una exportación completa en {source / name}.")
+        pending.append((name, size))
+    if not pending:
+        return
+
+    with TemporaryDirectory(dir=ROOT / "models") as temporary:
+        stage = Path(temporary)
+        if not source:
+            from ultralytics import YOLO
+
+            weights = stage / "yolo11s-seg.pt"
+            print("Descargando YOLO11s-seg oficial…", flush=True)
+            urlretrieve(
+                "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s-seg.pt",
+                weights,
+            )
+        for name, size in pending:
+            destination = ROOT / "models" / name
+            if source:
+                staged = stage / name
                 shutil.copytree(source / name, staged)
-                staged.rename(destination)
-        if not model_ready(destination):
-            missing.append(name)
-    if missing:
-        raise SystemExit(
-            "Faltan exportaciones completas (.xml, .bin y metadata.yaml) en models/:\n"
-            + "\n".join(f"  {name}" for name in missing)
-            + "\nCópialas ahí o vuelve a ejecutar con -ModelsSource."
-        )
+            else:
+                print(f"Exportando el modelo OpenVINO de {size} px…", flush=True)
+                staged = Path(YOLO(str(weights)).export(
+                    format="openvino", imgsz=size, dynamic=False, device="cpu",
+                ))
+            if not model_ready(staged):
+                raise SystemExit(f"La exportación de {size} px quedó incompleta.")
+            staged.rename(destination)
 
 
 def database_options(config):
     return {
-        key.lower(): os.environ.get(f"DB_{key}", config[f"DB_{key}"])
+        key.lower(): os.environ.get(f"DB_{key}", config.get(f"DB_{key}", ""))
         for key in ("HOST", "PORT", "USER", "PASSWORD")
     }
 
@@ -59,66 +80,34 @@ def check_databases(options, names):
             connection.execute("SELECT 1").fetchone()
 
 
-def provision_databases(options, names):
-    user = options["user"]
-    admin = input("Usuario administrador de PostgreSQL [postgres]: ").strip() or "postgres"
-    password = getpass.getpass(f"Contraseña de {admin}: ")
-    with psycopg.connect(
-        dbname="postgres", host=options["host"], port=options["port"],
-        user=admin, password=password, connect_timeout=5, autocommit=True,
-    ) as connection:
-        if not connection.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (user,)).fetchone():
-            connection.execute(
-                sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(
-                    sql.Identifier(user), sql.Literal(options["password"]),
-                )
-            )
-        for name in names:
-            if not connection.execute("SELECT 1 FROM pg_database WHERE datname = %s", (name,)).fetchone():
-                connection.execute(
-                    sql.SQL("CREATE DATABASE {} OWNER {}").format(
-                        sql.Identifier(name), sql.Identifier(user),
-                    )
-                )
-
-
 def prepare_database():
     existing_config = CONFIG.exists()
-    path = CONFIG if existing_config else ROOT / ".local.example" / "database.json"
-    config = json.loads(path.read_text(encoding="utf-8-sig"))
-    if not existing_config and "DB_PASSWORD" not in os.environ:
-        config["DB_PASSWORD"] = getpass.getpass(
-            "Contraseña del rol de OBJECTRA (elige una si es nuevo): "
-        )
-        if not config["DB_PASSWORD"]:
-            raise SystemExit("La contraseña del rol de OBJECTRA no puede quedar vacía.")
+    if not existing_config and not any(key in os.environ for key in ("DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD")):
+        from portable_postgres import prepare
 
-    options = database_options(config)
-    name = os.environ.get("DB_NAME", config["DB_NAME"])
-    names = (name, f"test_{name}")
-    try:
-        check_databases(options, names)
-    except psycopg.OperationalError as error:
-        print(f"No se pudo conectar como {options['user']} a las dos bases.\n{error}")
-        answer = input("¿Crear el rol y las bases que falten con un administrador local? [s/N]: ")
-        if answer.strip().lower() != "s":
-            raise SystemExit("Revisa la conexión de PostgreSQL y vuelve a ejecutar el instalador.")
-        try:
-            provision_databases(options, names)
-        except psycopg.Error:
-            raise SystemExit(
-                "No se pudieron crear el rol y las bases. Revisa el servicio, "
-                "las credenciales y los permisos del administrador de PostgreSQL."
-            ) from None
-        check_databases(options, names)
-
-    if not existing_config:
-        config.update({f"DB_{key.upper()}": value for key, value in options.items()})
-        config["DB_NAME"] = name
-        CONFIG.parent.mkdir(exist_ok=True)
+        config = prepare()
         with CONFIG.open("x", encoding="utf-8") as file:
             json.dump(config, file, ensure_ascii=False, indent=2)
             file.write("\n")
+        print("PostgreSQL local preparado para OBJECTRA.")
+        return
+
+    path = CONFIG if existing_config else ROOT / ".local.example" / "database.json"
+    config = json.loads(path.read_text(encoding="utf-8-sig"))
+    options = database_options(config)
+    name = os.environ.get("DB_NAME", config["DB_NAME"])
+    names = (name, f"test_{name}")
+    portable_started = False
+    if options["port"] == "55432" and (ROOT / ".local/postgresql-data/PG_VERSION").is_file():
+        from portable_postgres import start, stop
+
+        portable_started = start()
+    try:
+        check_databases(options, names)
+    finally:
+        if portable_started:
+            stop()
+
     print("Conexión PostgreSQL comprobada para la aplicación y las pruebas.")
 
 
@@ -129,5 +118,5 @@ if __name__ == "__main__":
     try:
         prepare_models(args.models_source)
         prepare_database()
-    except (OSError, ValueError, KeyError, psycopg.Error) as error:
+    except (OSError, ValueError, KeyError, psycopg.Error, subprocess.CalledProcessError) as error:
         raise SystemExit(f"No se pudo completar la instalación: {error}") from None

@@ -11,19 +11,21 @@ Construcción académica desde cero, por etapas. Este primer aporte integra úni
 
 ## Instalación desde un clon
 
-Requisitos: Python 3.13, PostgreSQL 14 o posterior y Git.
+### Instalación automática en Windows x64
 
-### Instalación asistida en Windows
-
-Con PostgreSQL local encendido, extrae las tres carpetas OpenVINO que distribuye el equipo. Desde la raíz del clon, ejecuta:
+Guarda `setup-local.ps1` en Descargas y ejecútalo desde PowerShell. El instalador utiliza el Administrador de paquetes de Windows (WinGet) y necesita conexión a Internet. Windows puede pedir permiso para instalar el runtime de Visual C++.
 
 ```powershell
-.\setup-local.ps1 -ModelsSource "C:\ruta\a\los-modelos"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\setup-local.ps1"
 ```
 
-`-ModelsSource` apunta a la carpeta que contiene las tres exportaciones. Puedes omitirlo si ya están en `models/`. El instalador prepara el entorno de Python, comprueba los modelos y la conexión a PostgreSQL, y ofrece crear el rol y las bases faltantes si proporcionas credenciales de administrador. Guarda la configuración de la aplicación en `.local/database.json` y usa `start-local.ps1` para migrar y arrancar. Usa `-NoStart` para preparar la instalación sin migrar ni arrancar.
+Desde Descargas, prepara una copia nueva en `%LOCALAPPDATA%\OBJECTRA` o reutiliza la que ya haya instalado ahí. Desde un clon existente, ejecuta el script dentro de ese clon para conservar su configuración y archivos. Descarga Python si hace falta, instala las dependencias y prepara un PostgreSQL privado en `127.0.0.1:55432` cuando no hay una configuración previa. Si ya existe una configuración de PostgreSQL, comprueba la conexión y reutiliza la base. Después aplica las migraciones pendientes y arranca Django en `http://127.0.0.1:8000`.
+
+Si faltan modelos, descarga los pesos oficiales YOLO11s-seg y genera las exportaciones OpenVINO de 320, 480 y 640 píxeles. Las exportaciones existentes se conservan. Para usar los modelos de EVA desde el inicio, indica la carpeta que los contiene con `-ModelsSource "C:\ruta\a\los-modelos"`. Usa `-NoStart` para preparar la instalación sin migrar ni arrancar. En sesiones posteriores, inicia la aplicación con `start-local.ps1` dentro de la carpeta instalada.
 
 ### Instalación manual
+
+Requisitos: Python 3.13, PostgreSQL 14 o posterior y Git.
 
 ```powershell
 py -3.13 -m venv .venv
