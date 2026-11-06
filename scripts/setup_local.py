@@ -7,7 +7,6 @@ import shutil
 import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from urllib.request import urlretrieve
 
 import psycopg
 
@@ -29,42 +28,27 @@ def model_ready(folder):
 
 def prepare_models(source):
     pending = []
-    for name, size in zip(MODELS, (320, 480, 640), strict=True):
+    for name in MODELS:
         destination = ROOT / "models" / name
         if model_ready(destination):
             continue
         if destination.exists():
             raise SystemExit(f"Exportación incompleta en {destination}. Corrígela o muévela para continuar.")
-        if source and not model_ready(source / name):
-            raise SystemExit(f"No se encontró una exportación completa en {source / name}.")
-        pending.append((name, size))
+        if source is None or not model_ready(source / name):
+            raise SystemExit(f"Falta la exportación de EVA {name}. Usa -ModelsSource con la carpeta de modelos del paquete.")
+        pending.append(name)
+
     if not pending:
         return
 
     with TemporaryDirectory(dir=ROOT / "models") as temporary:
         stage = Path(temporary)
-        if not source:
-            from ultralytics import YOLO
-
-            weights = stage / "yolo11s-seg.pt"
-            print("Descargando YOLO11s-seg oficial…", flush=True)
-            urlretrieve(
-                "https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s-seg.pt",
-                weights,
-            )
-        for name, size in pending:
-            destination = ROOT / "models" / name
-            if source:
-                staged = stage / name
-                shutil.copytree(source / name, staged)
-            else:
-                print(f"Exportando el modelo OpenVINO de {size} px…", flush=True)
-                staged = Path(YOLO(str(weights)).export(
-                    format="openvino", imgsz=size, dynamic=False, device="cpu",
-                ))
-            if not model_ready(staged):
-                raise SystemExit(f"La exportación de {size} px quedó incompleta.")
-            staged.rename(destination)
+        for name in pending:
+            shutil.copytree(source / name, stage / name)
+            if not model_ready(stage / name):
+                raise SystemExit(f"La copia de {name} quedó incompleta.")
+        for name in pending:
+            (stage / name).rename(ROOT / "models" / name)
 
 
 def database_options(config):
