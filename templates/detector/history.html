@@ -1,0 +1,8 @@
+{% for capture in page %}
+    <p>{{ capture.created_at }}</p>
+    {% for detection in capture.detections %}
+        <p>{{ detection.name }}</p>
+    {% endfor %}
+{% empty %}
+    <p>Aún no hay capturas</p>
+{% endfor %}
