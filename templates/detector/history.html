@@ -1,8 +1,36 @@
-{% for capture in page %}
-    <p>{{ capture.created_at }}</p>
-    {% for detection in capture.detections %}
-        <p>{{ detection.name }}</p>
-    {% endfor %}
-{% empty %}
-    <p>Aún no hay capturas</p>
-{% endfor %}
+{% extends 'detector/base.html' %}
+
+{% block content %}
+<p class="eyebrow">REGISTROS GUARDADOS</p>
+<h1>Historial de detecciones</h1>
+<p>Consulta las capturas que guardaste desde el detector.</p>
+
+<div class="history">
+  {% for capture in page %}
+  <article class="card">
+    <img class="capture" src="{{ capture.image }}" alt="Captura analizada del {{ capture.created_at|date:'d/m/Y H:i' }}" loading="lazy">
+    <h2>{{ capture.created_at|date:'d/m/Y H:i' }}</h2>
+    <p>{{ capture.processing_ms }} ms · {{ capture.detections|length }} objetos</p>
+    <ul>
+      {% for detection in capture.detections %}
+      <li>{{ detection.name }} · {% widthratio detection.confidence 1 100 %} %</li>
+      {% empty %}
+      <li>No se detectaron objetos.</li>
+      {% endfor %}
+    </ul>
+  </article>
+  {% empty %}
+  <section class="card">
+    <h2>Aún no hay capturas</h2>
+    <p>Analiza una imagen y pulsa «Guardar resultado» para crear el primer registro.</p>
+    <a href="{% url 'index' %}">Abrir detector</a>
+  </section>
+  {% endfor %}
+</div>
+
+<nav class="pagination" aria-label="Páginas">
+  {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}">Anterior</a>{% endif %}
+  <span>Página {{ page.number }} de {{ page.paginator.num_pages }}</span>
+  {% if page.has_next %}<a href="?page={{ page.next_page_number }}">Siguiente</a>{% endif %}
+</nav>
+{% endblock %}
