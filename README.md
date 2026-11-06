@@ -4,13 +4,13 @@ Aplicación web académica para detectar y segmentar objetos con la cámara o un
 
 ## Probar la demo en Windows
 
-Con el paquete **OBJECTRA-Demo-Windows.zip** del equipo:
+Pide al equipo el paquete **OBJECTRA-Demo-Windows-EVA.zip**. El paquete incluye las tres exportaciones originales de EVA (320, 480 y 640) y un iniciador para Windows x64. La descarga pública en [GitHub Releases](https://github.com/Sshadowcitoo/OBJECTRA/releases) está pendiente.
 
-1. Extrae el ZIP completo en una carpeta donde puedas escribir.
-2. Haz doble clic en **Iniciar OBJECTRA.cmd**. En el primer arranque necesitas Internet y WinGet para que el iniciador prepare los componentes que falten.
-3. Deja la ventana abierta. Cuando arranque, abre [OBJECTRA en localhost](http://127.0.0.1:8000/) si el navegador no se abrió automáticamente.
+1. Extrae el ZIP completo en una carpeta local donde puedas escribir.
+2. Haz doble clic en **Iniciar OBJECTRA.cmd**. El primer arranque requiere Internet y, si faltan componentes del sistema, WinGet. El iniciador prepara Python, las dependencias de la aplicación y PostgreSQL local según haga falta.
+3. Cuando la consola indique que arrancó, abre [OBJECTRA en localhost](http://127.0.0.1:8000/) y deja la ventana abierta. Para detenerlo, pulsa **Ctrl+C** en la consola.
 
-El paquete ya incluye los modelos OpenVINO. La copia de código que ofrece **Code → Download ZIP** de GitHub requiere la configuración de desarrollo indicada abajo. El instalador en PowerShell se desarrolla en el [PR #6](https://github.com/Sshadowcitoo/OBJECTRA/pull/6).
+La verificación en una PC Windows limpia sigue pendiente. **Code → Download ZIP** descarga el código fuente. Para ejecutarlo, sigue las instrucciones de desarrollo de abajo. El [PR #6](https://github.com/Sshadowcitoo/OBJECTRA/pull/6) documenta el trabajo del instalador.
 
 ### Instalación asistida con PowerShell
 
@@ -20,7 +20,7 @@ Esta rama incluye `setup-local.ps1`. En Windows de 64 bits con Internet y WinGet
 .\setup-local.ps1
 ```
 
-El script prepara los componentes que falten y reutiliza la configuración existente. Para copiar exportaciones ya preparadas, usa `-ModelsSource "C:\ruta\a\los-modelos"`. Si faltan modelos y no se indica una carpeta, el script genera las exportaciones desde YOLO11s-seg oficial. Para preparar sin arrancar, añade `-NoStart`. La demo con doble clic se entrega en el ZIP descrito arriba.
+El script prepara los componentes que falten y reutiliza la configuración existente. Si faltan exportaciones, usa `-ModelsSource "C:\ruta\a\los-modelos"` y apunta a la carpeta `models` del paquete de EVA. El instalador reutiliza las exportaciones ya presentes y copia las que falten desde esa carpeta. Para preparar sin arrancar, añade `-NoStart`. La demo con doble clic se entrega en el ZIP descrito arriba.
 
 ## Ejecutar desde el repositorio
 
