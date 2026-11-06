@@ -1,0 +1,67 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ system_name }} · Detección de objetos</title>
+  <link rel="stylesheet" href="{% static 'detector/styles.css' %}?v=5">
+  <link rel="stylesheet" href="{% static 'detector/polish.css' %}?v=6">
+</head>
+<body>
+  <div class="corner-detail corner-detail-top" aria-hidden="true"></div>
+  <div class="corner-detail corner-detail-bottom" aria-hidden="true"></div>
+
+  {# Biblioteca de iconos: se reutilizan con <svg><use href="#i-..."/></svg> #}
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 6h4l2-3h4l2 3h4v15H4z"/><circle cx="12" cy="13" r="4"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9"/></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7zM2 7v10l10 5 10-5V7M12 12v10"/></symbol>
+      <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2-6M3 3v5h5M12 7v6l4 2"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M8 3v6M16 9v6M10 15v6"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1"/><path d="m3 18 6-6 4 4 3-5 5 7"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v5m0 12v5M1 12h5m12 0h5"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 6"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M3 9V3h6m6 0h6v6M3 15v6h6m6 0h6v-6"/></symbol>
+    </defs>
+  </svg>
+
+  <aside class="sidebar">
+    <a class="brand" href="{% url 'index' %}" aria-label="{{ system_name }} inicio">
+      <svg class="logo" viewBox="0 0 80 80" aria-hidden="true"><path d="M23 7h34l17 30-17 30H23L6 37zM30 20h20l10 17-10 17H30L20 37z"/></svg>
+      <strong>{{ system_name }}</strong>
+      <span>Visión en cada detalle</span>
+    </a>
+
+    <p class="nav-label">ESPACIO DE TRABAJO</p>
+    <nav aria-label="Principal">
+      <a class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'index' %}"><svg><use href="#i-home"/></svg>Inicio</a>
+      <a href="{% url 'index' %}#workspace"><svg><use href="#i-camera"/></svg>Detección</a>
+      <a href="{% url 'index' %}#settings"><svg><use href="#i-settings"/></svg>Ajustes de detección</a>
+      <a class="{% if request.resolver_match.url_name == 'history' %}active{% endif %}" href="{% url 'history' %}"><svg><use href="#i-history"/></svg>Historial</a>
+    </nav>
+
+    <div class="sidebar-note">
+      <span class="dot"></span>
+      <div>
+        <strong>Tu espacio local</strong>
+        <small>Las capturas se guardan<br>solo cuando tú lo decides.</small>
+      </div>
+    </div>
+    <div class="sidebar-bottom">CONSTRUCCIÓN DE SOFTWARE<br><span>Proyecto académico · 2026</span></div>
+  </aside>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <span class="topbar-title">DETECCIÓN DE OBJETOS EN TIEMPO REAL</span>
+      <div class="environment"><span class="dot"></span>Entorno local <span class="avatar" aria-label="Equipo">O</span></div>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+    <footer>{{ system_name }} <span>·</span> El conteo corresponde al encuadre actual. Las detecciones pueden contener errores.</footer>
+  </div>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
