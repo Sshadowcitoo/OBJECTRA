@@ -10,4 +10,4 @@ OBJECTRA usa exportaciones OpenVINO de YOLO11s-seg sobre COCO. Para ejecutar el 
 
 Cada carpeta debe contener `metadata.yaml` y el par de archivos `.xml` y `.bin` de la misma exportación. `YOLO_MODEL_PATH` permite cambiar la ruta de Rápido. Las demás rutas se definen en `QUALITY_MODELS` en [config/settings.py](../config/settings.py).
 
-La copia de referencia del equipo incluye las tres exportaciones procedentes de EVA. El paquete de demo de Windows preparado inicialmente incluye exportaciones equivalentes en resolución a partir del checkpoint oficial de Ultralytics. Consulta el README incluido en cada paquete para identificar los pesos que contiene. Los modelos se distribuyen aparte del código en Git. Conserva la atribución y la documentación de licencia que acompañan a los pesos.
+El paquete `OBJECTRA-Demo-Windows-EVA.zip` incluye las mismas tres exportaciones de EVA que usa la copia de referencia del equipo. Se distribuyen aparte del código en Git. Conserva los metadatos, la atribución y la documentación de licencia que acompañan a los pesos.
