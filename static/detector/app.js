@@ -212,7 +212,7 @@ async function analyze(blob, currentGeneration, source = 'upload') {
     data.append('source', source);
 
     const result = await post('/api/detect/', data, controller.signal);
-    if (currentGeneration !== generation || requestedQuality !== quality) return;
+    if (currentGeneration !== generation || (source === 'camera' && requestedQuality !== quality)) return;
 
     const elapsed = performance.now() - startTime;
     if (originalUrl) URL.revokeObjectURL(originalUrl);
@@ -232,28 +232,39 @@ async function analyze(blob, currentGeneration, source = 'upload') {
     $id('count').textContent = result.detections.length; 
     $id('result-total').textContent = result.detections.length;
     $id('timing').textContent = `${result.processing_ms} ms`;
-    $id('analysis-rate').textContent = `${(1000 / Math.max(1, elapsed)).toFixed(1)} análisis/s · ${qualityLabels[quality]}`;
+    $id('analysis-rate').textContent = `${(1000 / Math.max(1, elapsed)).toFixed(1)} análisis/s · ${qualityLabels[requestedQuality]}`;
 
     token = result.can_save ? result.token : null;
     $id('save').disabled = !token; 
     $id('snapshot').disabled = !token;
     $id('save-note').hidden = Boolean(token); 
     $id('back-welcome').hidden = false;
-    activeQuality = quality;
+    activeQuality = requestedQuality;
 
     await renderDetections(result, currentGeneration);
     if (currentGeneration !== generation) return;
 
     status(running ? 'Cámara en vivo. Las cajas corresponden al último análisis recibido.' : (token ? 'Análisis completado. Puedes guardar este resultado.' : 'Ejemplo analizado. Explora la comparación; esta imagen no se guarda.'));
-    systemState(running ? 'Detección activa' : 'Análisis completado', `${qualityLabels[quality]} ${qualitySizes[quality]} px`);
+    systemState(running ? 'Detección activa' : 'Análisis completado', `${qualityLabels[requestedQuality]} ${qualitySizes[requestedQuality]} px`);
     cameraState(running ? 'Detectando...' : 'Imagen analizada', running);
 
   } catch (error) {
     if (currentGeneration === generation) {
-      stop(); 
-      status(error.name === 'AbortError' ? 'El análisis tardó demasiado. Intenta otra vez en modo Rápido.' : error.message);
-      systemState('Revisa la conexión', 'No se pudo completar el análisis'); 
-      cameraState('Sin conexión');
+      const message = error.name === 'AbortError' ? 'El análisis tardó demasiado. Prueba el modo Rápido.' : error.message;
+      if (source === 'camera') {
+        if (requestedQuality !== quality) return;
+        boxes = [];
+        clearTimeout(clearBoxesTimer);
+        drawBoxes();
+        status(`Cámara en vivo. ${message}`);
+        systemState('Análisis no disponible', 'La cámara sigue activa. Reintentando el análisis…');
+        cameraState('En vivo', true);
+        return false;
+      }
+      stop();
+      status(message);
+      systemState('Análisis no disponible', 'No se pudo completar el análisis');
+      cameraState('Sin análisis');
     }
   } finally {
     clearTimeout(timeout); 
@@ -291,18 +302,23 @@ function stop() {
 async function loop(currentGeneration) {
   if (!running || currentGeneration !== generation) return;
   const iterationStart = performance.now();
+  let retryDelay = 16;
 
   if (!busy && $id('camera').readyState >= 2) {
     const canvas = $id('frame'), video = $id('camera');
-    canvas.width = qualitySizes[quality]; 
+    const frameQuality = quality;
+    canvas.width = qualitySizes[frameQuality];
     canvas.height = Math.round(canvas.width * video.videoHeight / video.videoWidth);
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality === 'fast' ? .65 : .8));
-    if (blob && running && currentGeneration === generation) await analyze(blob, currentGeneration, 'camera');
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', frameQuality === 'fast' ? .65 : .8));
+    if (blob && running && currentGeneration === generation && frameQuality === quality) {
+      const analyzed = await analyze(blob, currentGeneration, 'camera');
+      if (analyzed === false) retryDelay = 3000;
+    }
   }
 
   if (running && currentGeneration === generation) {
-    setTimeout(() => loop(currentGeneration), Math.max(16, 100 - (performance.now() - iterationStart)));
+    setTimeout(() => loop(currentGeneration), Math.max(retryDelay, 100 - (performance.now() - iterationStart)));
   }
 }
 
