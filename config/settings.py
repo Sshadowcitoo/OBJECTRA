@@ -55,3 +55,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 3 * 1024 * 1024
 SYSTEM_NAME = os.getenv("SYSTEM_NAME", "OBJECTRA")
+
+MODEL_PATH = Path(os.getenv(
+    "YOLO_MODEL_PATH",
+    str(BASE_DIR / "models" / "yolo11s-seg-eva-320_openvino_model"),
+))
+QUALITY_MODELS = {
+    "fast": (320, MODEL_PATH),
+    "balanced": (480, BASE_DIR / "models" / "yolo11s-seg-eva-480_openvino_model"),
+    "detail": (640, BASE_DIR / "models" / "yolo11s-seg_openvino_model"),
+}
