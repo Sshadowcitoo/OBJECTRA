@@ -13,6 +13,18 @@ Construcción académica desde cero, por etapas. Este primer aporte integra úni
 
 Requisitos: Python 3.13, PostgreSQL 14 o posterior y Git.
 
+### Instalación asistida en Windows
+
+Con PostgreSQL local encendido, extrae las tres carpetas OpenVINO que distribuye el equipo. Desde la raíz del clon, ejecuta:
+
+```powershell
+.\setup-local.ps1 -ModelsSource "C:\ruta\a\los-modelos"
+```
+
+`-ModelsSource` apunta a la carpeta que contiene las tres exportaciones. Puedes omitirlo si ya están en `models/`. El instalador prepara el entorno de Python, comprueba los modelos y la conexión a PostgreSQL, y ofrece crear el rol y las bases faltantes si proporcionas credenciales de administrador. Guarda la configuración de la aplicación en `.local/database.json` y usa `start-local.ps1` para migrar y arrancar. Usa `-NoStart` para preparar la instalación sin migrar ni arrancar.
+
+### Instalación manual
+
 ```powershell
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
