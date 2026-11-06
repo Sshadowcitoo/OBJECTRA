@@ -47,6 +47,10 @@ class DetectionFlowTests(TestCase):
             response = self.client.post("/api/detect/", {"frame": SimpleUploadedFile("frame.jpg", b"invalid"), "confidence": confidence})
             self.assertEqual(response.status_code, 400)
 
+    def test_empty_file_is_rejected(self):
+        response = self.client.post("/api/detect/", {"frame": SimpleUploadedFile("frame.jpg", b"")})
+        self.assertEqual(response.status_code, 400)
+
     def test_invalid_image_does_not_load_model(self):
         response = self.client.post("/api/detect/", {"frame": SimpleUploadedFile("frame.jpg", b"not an image")})
         self.assertEqual(response.status_code, 400)

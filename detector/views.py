@@ -37,8 +37,8 @@ def history(request):
 @require_POST
 def detect(request):
     upload = request.FILES.get("frame")
-    if upload is None or upload.size > 2 * 1024 * 1024:
-        return JsonResponse({"error": "Envía una imagen de hasta 2 MB."}, status=400)
+    if upload is None or upload.size == 0 or upload.size > 2 * 1024 * 1024:
+        return JsonResponse({"error": "Envía una imagen no vacía de hasta 2 MB."}, status=400)
     try:
         confidence = float(request.POST.get("confidence", "0.25"))
         if not math.isfinite(confidence) or not 0.1 <= confidence <= 0.9:
