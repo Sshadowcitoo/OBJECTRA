@@ -1,32 +1,31 @@
-# Contrato de construcción por etapas
+# Contrato de la aplicación
 
-## Estado tras el aporte de CESAR
+## Pantallas y endpoints
 
-Solo está integrada la base Django/PostgreSQL. La pantalla inicial es intencionalmente mínima. No hay detección, cámara, comparador ni historial web todavía.
+| Método | Ruta | Función |
+| --- | --- | --- |
+| GET | `/` | Detector con cámara, carga de imagen, ejemplo y comparador |
+| GET | `/historial/` | Capturas guardadas, hasta 12 por página |
+| POST | `/api/detect/` | Analizar una imagen o un fotograma |
+| POST | `/api/save/` | Guardar el resultado firmado por el servidor |
 
-## Siguiente PR: JHOAN
+Los POST usan la protección CSRF de Django. El cliente envía el encabezado `X-CSRFToken`.
 
-- Crear `detector/vision.py`, integrar OpenCV, Ultralytics y los tres modelos OpenVINO externos.
-- Añadir `GET /historial/`, `POST /api/detect/` y `POST /api/save/` en `config/urls.py`.
-- `detect` recibe FormData: frame (imagen, máximo 2 MB), confidence (0.10 a 0.90), quality (fast/balanced/detail) y source (camera/upload/example).
-- Respuesta: detections, processing_ms, image (JPEG data URL), token y can_save.
-- Cada detección: class_id, name, confidence, area_percent y box normalizada [x1,y1,x2,y2].
-- El token solo firma el resultado original del servidor, sin confiar en etiquetas del cliente; save valida firma y antigüedad antes de crear Capture.
-- El ejemplo no obtiene token ni permiso de guardado. También reconocer el mismo archivo por hash si se sube renombrado.
-- Incorporar pruebas de validación, demo y guardado. Mantener la página mínima y crear un historial mínimo para que esta etapa sea revisable sin la interfaz final.
+## Analizar
 
-## Siguiente PR: JEAN, después de JHOAN
+`POST /api/detect/` recibe `multipart/form-data`.
 
-Crear `templates/detector/base.html`, mejorar `index.html` y `history.html`, y construir estilos estáticos con la identidad validada: granate, verde, dorado y fondo claro. Incluir bienvenida, navegación, visor, controles de calidad/confianza y contenedores de resultados. Mantener identificadores y rutas documentados para la etapa de interacción.
+| Campo | Valor |
+| --- | --- |
+| `frame` | Archivo de imagen no vacío de hasta 2 MB y hasta 2.073.600 píxeles |
+| `confidence` | Umbral entre 0.10 y 0.90. Predeterminado: 0.25 |
+| `quality` | `fast`, `balanced` o `detail`. Predeterminado: `fast` |
+| `source` | El cliente usa `camera`, `upload` o `example` |
 
-## Siguiente PR: DANIELA, después de JEAN
+El resultado JSON incluye `detections`, `processing_ms`, `image` (JPEG como data URL), `token` y `can_save`. Cada detección contiene `class_id`, `name`, `confidence`, `area_percent` y `box` con las coordenadas normalizadas `[x1, y1, x2, y2]`. `area_percent` describe el área de la máscara dentro de la imagen cuando hay máscara disponible. La API responde con 400 para entradas inválidas y 503 cuando el análisis no está disponible.
 
-Crear JS de cámara nativa, solicitudes sin solapamiento, miniaturas y agrupación con confianza media real. Integrar comparador, botón Explorar, regreso a bienvenida y bloqueo visual de guardado del ejemplo. Implementar estados y navegación del historial. Comprobar teclado y móvil.
+El servidor omite el token si la fuente es `example` o si el contenido coincide con el archivo de ejemplo por SHA-256, aunque se haya renombrado.
 
-## Siguiente PR: ISAAC, al final
+## Guardar
 
-Documentar instalación desde un clon, completar guion y grabar las funciones integradas desde PC (máximo 3 minutos). Añadir enlaces reales de video y repositorio para el PDF del aula. No cambiar el backend.
-
-## Regla común
-
-Cada integrante escribe y prueba su etapa en su propia rama, abre PR hacia main y solicita revisión. No se sube la aplicación local completa como si ya fuera el trabajo de los cuatro integrantes.
+`POST /api/save/` recibe `token` como campo de formulario. El servidor verifica la firma y una vigencia máxima de 900 segundos, crea la captura y responde con HTTP 201 y su `id`. La interfaz bloquea ambos controles de guardado mientras una solicitud está pendiente.

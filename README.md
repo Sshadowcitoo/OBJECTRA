@@ -1,61 +1,54 @@
 # OBJECTRA
 
-Construcción académica desde cero, por etapas. Este primer aporte integra únicamente la base técnica de CESAR; el sistema completo se construye en los siguientes pull requests.
+Aplicación web académica para detectar y segmentar objetos con la cámara o una imagen. Usa Django, PostgreSQL y YOLO11s-seg con OpenVINO. La interfaz permite elegir tres calidades, ajustar la confianza, comparar una imagen antes y después del análisis y consultar el historial de capturas guardadas.
 
-## Qué funciona en esta etapa
+## Probar la demo en Windows
 
-- Proyecto Django, página inicial mínima y protección CSRF.
-- PostgreSQL por defecto, con configuración privada excluida de Git.
-- Modelo `Capture`, migración inicial y comando de comprobación de conexión.
-- Pruebas de persistencia, página inicial y conexión.
+Con el paquete **OBJECTRA-Demo-Windows.zip** del equipo:
 
-## Instalación desde un clon
+1. Extrae el ZIP completo en una carpeta donde puedas escribir.
+2. Haz doble clic en **Iniciar OBJECTRA.cmd**. En el primer arranque necesitas Internet y WinGet para que el iniciador prepare los componentes que falten.
+3. Deja la ventana abierta. Cuando arranque, abre [OBJECTRA en localhost](http://127.0.0.1:8000/) si el navegador no se abrió automáticamente.
 
-### Instalación automática en Windows x64
+El paquete ya incluye los modelos OpenVINO. La copia de código que ofrece **Code → Download ZIP** de GitHub requiere la configuración de desarrollo indicada abajo. El instalador en PowerShell se desarrolla en el [PR #6](https://github.com/Sshadowcitoo/OBJECTRA/pull/6).
 
-Guarda `setup-local.ps1` en Descargas y ejecútalo desde PowerShell. El instalador utiliza el Administrador de paquetes de Windows (WinGet) y necesita conexión a Internet. Windows puede pedir permiso para instalar el runtime de Visual C++.
+### Instalación asistida con PowerShell
+
+Esta rama incluye `setup-local.ps1`. En Windows de 64 bits con Internet y WinGet, ejecútalo desde la carpeta del proyecto:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:USERPROFILE\Downloads\setup-local.ps1"
+.\setup-local.ps1
 ```
 
-Desde Descargas, prepara una copia nueva en `%LOCALAPPDATA%\OBJECTRA` o reutiliza la que ya haya instalado ahí. Desde un clon existente, ejecuta el script dentro de ese clon para conservar su configuración y archivos. Descarga Python si hace falta, instala las dependencias y prepara un PostgreSQL privado en `127.0.0.1:55432` cuando no hay una configuración previa. Si ya existe una configuración de PostgreSQL, comprueba la conexión y reutiliza la base. Después aplica las migraciones pendientes y arranca Django en `http://127.0.0.1:8000`.
+El script prepara los componentes que falten y reutiliza la configuración existente. Para copiar exportaciones ya preparadas, usa `-ModelsSource "C:\ruta\a\los-modelos"`. Si faltan modelos y no se indica una carpeta, el script genera las exportaciones desde YOLO11s-seg oficial. Para preparar sin arrancar, añade `-NoStart`. La demo con doble clic se entrega en el ZIP descrito arriba.
 
-Si faltan modelos, descarga los pesos oficiales YOLO11s-seg y genera las exportaciones OpenVINO de 320, 480 y 640 píxeles. Las exportaciones existentes se conservan. Para usar los modelos de EVA desde el inicio, indica la carpeta que los contiene con `-ModelsSource "C:\ruta\a\los-modelos"`. Usa `-NoStart` para preparar la instalación sin migrar ni arrancar. En sesiones posteriores, inicia la aplicación con `start-local.ps1` dentro de la carpeta instalada.
+## Ejecutar desde el repositorio
 
-### Instalación manual
-
-Requisitos: Python 3.13, PostgreSQL 14 o posterior y Git.
+Requisitos de la configuración documentada para Windows: Python 3.13, PostgreSQL 14 o posterior, Git y las [tres exportaciones OpenVINO](models/README.md).
 
 ```powershell
+git clone https://github.com/Sshadowcitoo/OBJECTRA.git
+cd OBJECTRA
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 New-Item -ItemType Directory -Force .local
-Copy-Item .local.example/database.json .local/database.json
+Copy-Item .local.example\database.json .local\database.json
 ```
 
-Editar la contraseña de `.local/database.json` solo en el computador local. El archivo `.env.example` es una referencia y no se carga automáticamente. Variables de entorno DB_* tienen prioridad sobre el JSON.
+En una instalación nueva, crea en PostgreSQL un rol con inicio de sesión llamado `objectra` y una base `objectra` de su propiedad. Para ejecutar las pruebas con PostgreSQL, crea también `test_objectra` con el mismo propietario. Configura las credenciales en `.local/database.json`. Las variables `DB_*` tienen prioridad sobre el JSON. El archivo `.env.example` sirve de referencia y Django no lo carga automáticamente.
 
-Crear en PostgreSQL un usuario `objectra` con login y una contraseña propia, y dos bases con ese usuario como propietario: `objectra` y `test_objectra`. No necesita ser superusuario ni tener permiso de crear bases. El usuario administrador de PostgreSQL crea esas bases desde pgAdmin.
+Coloca las tres exportaciones bajo `models/`, deja PostgreSQL activo y ejecuta:
 
 ```powershell
-.\.venv\Scripts\python.exe manage.py check_database --require-postgresql
-.\.venv\Scripts\python.exe manage.py migrate
-.\.venv\Scripts\python.exe manage.py test --keepdb
-.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
+.\start-local.ps1
 ```
 
-Abrir http://127.0.0.1:8000. Debe aparecer la página mínima de OBJECTRA. La interfaz final aún no corresponde a esta etapa. Alternativa de arranque: `./start-local.ps1` con PostgreSQL activo.
+El script comprueba la conexión, aplica las migraciones pendientes y arranca Django en [127.0.0.1:8000](http://127.0.0.1:8000/). Si ya tienes un entorno de Python con las dependencias, puedes pasar su ejecutable con `-Python`.
 
-SQLite solo se habilita explícitamente con `LOCAL_SQLITE=1` para ensayos; la entrega académica utiliza PostgreSQL.
+## Uso y verificación
 
-## Cuatro aportes pendientes
+- **Explorar la detección** analiza una imagen de ejemplo y abre el comparador. El ejemplo no se puede guardar.
+- **Encender cámara** usa la cámara del navegador. Puedes ajustar calidad y confianza, guardar una captura y verla en **Historial**.
+- **Subir imagen** analiza una foto propia. Puedes comparar el resultado y guardarlo.
 
-1. JHOAN: detector, API, validaciones y guardado seguro.
-2. JEAN: interfaz, plantillas y estilos validados.
-3. DANIELA: cámara, comparador, regreso a bienvenida e interacción.
-4. ISAAC: documentación, guion y video de hasta 3 minutos desde PC.
-
-Consultar `docs/CONTRATO.md` para rutas, campos y criterios de integración. Los modelos se preparan en la etapa del detector y se distribuyen aparte, según `models/README.md`.
-
-No subir `.local/`, `.venv/`, contraseñas ni datos de PostgreSQL. Los pesos del modelo se excluyen de Git. La versión local completa validada se usa como referencia, no como copia inicial del repositorio.
+Consulta el [contrato de la API](docs/CONTRATO.md), la [guía de verificación](docs/VERIFICACION_BASE.md) y el [guion de demostración](docs/GUION_VIDEO.md). Mantén fuera de Git las credenciales, las bases locales, los entornos virtuales y los pesos.
