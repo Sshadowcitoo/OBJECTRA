@@ -1,0 +1,10 @@
+{
+  "name": "objectra",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node --test tests/detection-groups.test.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

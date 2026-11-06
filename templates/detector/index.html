@@ -156,5 +156,6 @@
 {% endblock %}
 
 {% block scripts %}
-{# Los scripts app.js y detection-groups.js se añaden en el aporte de DANIELA (feature/interaccion). #}
+  <script src="{% static 'detector/detection-groups.js' %}" defer></script>
+  <script src="{% static 'detector/app.js' %}" defer></script>
 {% endblock %}
