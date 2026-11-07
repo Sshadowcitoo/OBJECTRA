@@ -53,4 +53,6 @@ Estos resultados corresponden al ensayo manual reportado por Isaac en su computa
 
 ## Entrega académica
 
+Video de demostración grabado y subido por Isaac: [OBJECTRA — Demostración funcional y pruebas del sistema](https://drive.google.com/file/d/1VlUZ9dLxV1Qq9Yt86QmBOE9MtSD1baBs/view?usp=sharing).
+
 El [documento de entrega](docs/ENTREGA.md) reúne la versión de la demo, los enlaces y los pendientes. El [guion narrado](docs/GUION_VIDEO.md) organiza una demostración de hasta tres minutos. Los [resultados de verificación de la demo](docs/VERIFICACION_DEMO.md) distinguen las comprobaciones realizadas de las pruebas manuales pendientes.

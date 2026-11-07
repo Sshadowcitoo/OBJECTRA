@@ -1,7 +1,7 @@
 # Guion de demostración de OBJECTRA
 
 Responsable de la preparación documental y de la grabación: Isaac.
-Estado: guion preparado; grabación pendiente. Duración máxima: tres minutos desde computador.
+Estado: Isaac informó que el video fue grabado y subido; enlace disponible en ENTREGA.md. Duración y acceso pendientes de comprobación. Duración máxima: tres minutos desde computador.
 
 ## Preparación
 
@@ -28,7 +28,10 @@ Ajustar la narración al resultado real. No presentar pruebas pendientes como re
 ## Antes de publicar el video
 
 - [x] Isaac confirmó las pruebas de cámara, imagen propia, guardado y persistencia del historial. Revisar las comprobaciones específicas pendientes en VERIFICACION_DEMO.md.
-- [ ] Grabar desde computador y comprobar duración de hasta tres minutos.
+- [x] Video grabado por Isaac.
+- [ ] Comprobar duración de hasta tres minutos.
 - [ ] Verificar audio y legibilidad de la pantalla.
-- [ ] Subir el video y comprobar el acceso desde otra cuenta.
-- [ ] Añadir el enlace real a [ENTREGA.md](ENTREGA.md) y a la plantilla del aula.
+- [x] Video subido a Google Drive.
+- [ ] Comprobar el acceso desde otra cuenta.
+- [x] Enlace real añadido a [ENTREGA.md](ENTREGA.md).
+- [ ] Añadir el enlace a la plantilla del aula.

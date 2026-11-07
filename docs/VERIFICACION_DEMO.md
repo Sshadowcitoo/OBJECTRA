@@ -53,4 +53,4 @@ Isaac confirmó que los siguientes casos también pasaron en su computador:
 
 Isaac aportó dos capturas de pantalla: la primera muestra 11 tarjetas y la segunda 12. La nueva tarjeta aparece al inicio con hora 06/11/2026 22:32; las anteriores permanecen visibles. El incremento observado es de una sola entrada, compatible con un único guardado sin duplicados en este ensayo. Las imágenes por sí solas no permiten contar los clics realizados; la conclusión de una entrada por clic supone que se pulsó Guardar captura una sola vez entre ambas imágenes.
 
-Las pruebas funcionales de la lista quedaron reportadas por Isaac y se documentó la comparación visual del guardado. La incidencia del instalador descrita arriba continúa registrada. El video y la revisión final de entrega siguen pendientes.
+Las pruebas funcionales de la lista quedaron reportadas por Isaac y se documentó la comparación visual del guardado. La incidencia del instalador descrita arriba continúa registrada. Isaac informó que el video ya fue grabado y subido; su enlace está en ENTREGA.md. La duración, el acceso desde otra cuenta y la revisión final de entrega siguen pendientes.
