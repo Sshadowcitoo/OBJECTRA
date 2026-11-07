@@ -47,8 +47,10 @@ Isaac confirmó que los siguientes casos también pasaron en su computador:
 - [x] Historial persistente tras reiniciar.
 - [x] Escena vacía y archivo inválido con mensajes comprensibles.
 
-## Comprobación específica pendiente
+## Comprobación del número de capturas
 
-- [ ] Captura en vivo: comprobar explícitamente que se crea una sola entrada por acción de guardado.
+- [x] Comparación del historial antes y después del ensayo de guardado: se observa una entrada adicional.
 
-El guardado y la consulta del historial están confirmados. El conteo de entradas por cada acción no se incluyó expresamente en el reporte del ensayo. La incidencia del instalador descrita arriba continúa registrada.
+Isaac aportó dos capturas de pantalla: la primera muestra 11 tarjetas y la segunda 12. La nueva tarjeta aparece al inicio con hora 06/11/2026 22:32; las anteriores permanecen visibles. El incremento observado es de una sola entrada, compatible con un único guardado sin duplicados en este ensayo. Las imágenes por sí solas no permiten contar los clics realizados; la conclusión de una entrada por clic supone que se pulsó Guardar captura una sola vez entre ambas imágenes.
+
+Las pruebas funcionales de la lista quedaron reportadas por Isaac y se documentó la comparación visual del guardado. La incidencia del instalador descrita arriba continúa registrada. El video y la revisión final de entrega siguen pendientes.

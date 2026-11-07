@@ -27,6 +27,7 @@ La preparación documental se realizó con asistencia de Codex. Las comprobacion
 - [x] Cámara comprobada personalmente por Isaac.
 - [x] Imagen propia comprobada personalmente.
 - [x] Guardado de captura y consulta en Historial comprobados por Isaac durante el ensayo.
+- [x] Comparación visual del historial: incremento de 11 a 12 tarjetas; alcance documentado en VERIFICACION_DEMO.md.
 - [ ] Video de hasta tres minutos grabado desde computador.
 - [ ] Enlace del video añadido y accesible desde otra cuenta.
 - [ ] Otro integrante revisó los enlaces del pull request.
