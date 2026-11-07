@@ -27,7 +27,7 @@ Ajustar la narración al resultado real. No presentar pruebas pendientes como re
 
 ## Antes de publicar el video
 
-- [ ] Probar cámara, imagen propia, guardado e historial según la lista de verificación.
+- [x] Isaac confirmó las pruebas de cámara, imagen propia, guardado y persistencia del historial. Revisar las comprobaciones específicas pendientes en VERIFICACION_DEMO.md.
 - [ ] Grabar desde computador y comprobar duración de hasta tres minutos.
 - [ ] Verificar audio y legibilidad de la pantalla.
 - [ ] Subir el video y comprobar el acceso desde otra cuenta.

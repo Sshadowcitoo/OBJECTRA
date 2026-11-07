@@ -36,13 +36,19 @@ Isaac realizó personalmente el ensayo y confirmó los siguientes resultados:
 
 Esta confirmación describe el comportamiento observado por Isaac; no incluye mediciones de rendimiento ni inspección técnica de los tracks de cámara.
 
-## Pruebas manuales pendientes
-- [ ] Rechazo del permiso y posibilidad de reintentar.
-- [ ] Mostrar/ocultar cajas y pantalla completa.
-- [ ] Arrastre del comparador con puntero.
-- [ ] Imagen propia: análisis, comparación y guardado.
-- [ ] Captura en vivo: una entrada por acción de guardado.
-- [ ] Historial persistente tras reiniciar.
-- [ ] Escena vacía y archivo inválido con mensajes comprensibles.
+## Comprobaciones adicionales reportadas por Isaac
 
-Marcar solo después de ejecutar cada caso y registrar cualquier fallo antes de grabar la entrega.
+Isaac confirmó que los siguientes casos también pasaron en su computador:
+
+- [x] Rechazo del permiso y posibilidad de reintentar.
+- [x] Mostrar/ocultar cajas y pantalla completa.
+- [x] Arrastre del comparador con puntero.
+- [x] Imagen propia: análisis, comparación y guardado.
+- [x] Historial persistente tras reiniciar.
+- [x] Escena vacía y archivo inválido con mensajes comprensibles.
+
+## Comprobación específica pendiente
+
+- [ ] Captura en vivo: comprobar explícitamente que se crea una sola entrada por acción de guardado.
+
+El guardado y la consulta del historial están confirmados. El conteo de entradas por cada acción no se incluyó expresamente en el reporte del ensayo. La incidencia del instalador descrita arriba continúa registrada.

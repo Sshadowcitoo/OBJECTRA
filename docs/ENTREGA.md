@@ -19,13 +19,13 @@
 - Organización de los resultados de verificación y de las pruebas pendientes.
 - Preparación de este documento para reunir los enlaces de entrega.
 
-La preparación documental se realizó con asistencia de Codex. Las comprobaciones automatizadas y la revisión del ejemplo se ejecutaron con esa asistencia; Isaac confirmó personalmente el encendido y detección con cámara, las tres calidades, la confianza, el guardado y consulta en Historial y el apagado con Detener. La grabación sigue pendiente. El commit y el pull request documentan este aporte; no acreditan la autoría de los módulos de otros integrantes.
+La preparación documental se realizó con asistencia de Codex. Las comprobaciones automatizadas y la revisión del ejemplo se ejecutaron con esa asistencia; Isaac confirmó personalmente el encendido y detección con cámara, las tres calidades, la confianza, el guardado y consulta en Historial y el apagado con Detener. También confirmó las pruebas de imagen propia, persistencia tras reiniciar, comparador con puntero, controles y manejo de errores descritas en la verificación. La grabación sigue pendiente. El commit y el pull request documentan este aporte; no acreditan la autoría de los módulos de otros integrantes.
 
 ## Cierre de entrega
 
 - [ ] Isaac revisó y comprendió el contenido del aporte documental.
 - [x] Cámara comprobada personalmente por Isaac.
-- [ ] Imagen propia comprobada personalmente.
+- [x] Imagen propia comprobada personalmente.
 - [x] Guardado de captura y consulta en Historial comprobados por Isaac durante el ensayo.
 - [ ] Video de hasta tres minutos grabado desde computador.
 - [ ] Enlace del video añadido y accesible desde otra cuenta.
