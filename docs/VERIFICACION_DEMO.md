@@ -24,13 +24,20 @@ Las inferencias directas de primera ejecución registraron 23733 ms (fast), 1737
 
 La extracción completa del paquete de PostgreSQL falló por una ruta larga dentro de pgAdmin. Se prepararon únicamente `bin`, `lib` y `share` del mismo paquete oficial en `.local/postgresql`. Después, `scripts/setup_local.py` completó la preparación y `start-demo.ps1` comprobó PostgreSQL y aplicó las migraciones. No se modificó el código de la aplicación. La incidencia debe revisarse antes de dar por validada la instalación automática para cualquier ubicación.
 
+## Prueba manual reportada por Isaac
+
+Isaac realizó personalmente el ensayo y confirmó los siguientes resultados:
+
+- [x] La cámara enciende y detecta objetos.
+- [x] Funcionan las tres calidades: Rápido, Equilibrado y Detalle.
+- [x] Funciona el ajuste de confianza.
+- [x] Se puede guardar una captura y consultarla en Historial.
+- [x] La cámara se apaga al pulsar **Detener**.
+
+Esta confirmación describe el comportamiento observado por Isaac; no incluye mediciones de rendimiento ni inspección técnica de los tracks de cámara.
+
 ## Pruebas manuales pendientes
-
-Isaac decidió probar personalmente la cámara; no se activó durante esta revisión.
-
-- [ ] Permiso concedido, cámara en vivo y detención que libera los tracks.
 - [ ] Rechazo del permiso y posibilidad de reintentar.
-- [ ] Cambio de calidad y confianza durante el análisis.
 - [ ] Mostrar/ocultar cajas y pantalla completa.
 - [ ] Arrastre del comparador con puntero.
 - [ ] Imagen propia: análisis, comparación y guardado.

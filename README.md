@@ -43,6 +43,12 @@ El script comprueba la conexión, aplica las migraciones pendientes y arranca Dj
 
 Consulta el [contrato de la API](docs/CONTRATO.md), la [guía de verificación](docs/VERIFICACION_BASE.md) y el [guion de demostración](docs/GUION_VIDEO.md). Mantén fuera de Git las credenciales, las bases locales, los entornos virtuales y los pesos.
 
+## Prueba manual de cámara
+
+Isaac confirmó en su computador el funcionamiento de la cámara y la detección de objetos, las tres calidades (Rápido, Equilibrado y Detalle), el ajuste de confianza, el guardado de una captura y su consulta en Historial. También confirmó que la cámara se apaga al pulsar **Detener**.
+
+Estos resultados corresponden al ensayo manual reportado por Isaac. La prueba con imagen propia, la persistencia después de reiniciar y los demás casos pendientes se detallan en la [verificación de la demo](docs/VERIFICACION_DEMO.md).
+
 ## Entrega académica
 
 El [documento de entrega](docs/ENTREGA.md) reúne la versión de la demo, los enlaces y los pendientes. El [guion narrado](docs/GUION_VIDEO.md) organiza una demostración de hasta tres minutos. Los [resultados de verificación de la demo](docs/VERIFICACION_DEMO.md) distinguen las comprobaciones realizadas de las pruebas manuales pendientes.
