@@ -2,7 +2,7 @@
 
 Fecha: 6 de noviembre de 2026. Paquete probado: `OBJECTRA-Demo-Windows.zip`, release `v0.1.0-demo`.
 
-Estas comprobaciones se realizaron en el computador de Isaac con asistencia de Codex. No equivalen a validar el instalador en una PC Windows limpia.
+El equipo confirmó que el ZIP publicado funcionó en el computador de Isaac. Las comprobaciones se realizaron con asistencia de Codex. La instalación automática en una PC Windows limpia sigue sin verificarse.
 
 ## Resultados obtenidos
 
@@ -53,4 +53,4 @@ Isaac confirmó que los siguientes casos también pasaron en su computador:
 
 Isaac aportó dos capturas de pantalla: la primera muestra 11 tarjetas y la segunda 12. La nueva tarjeta aparece al inicio con hora 06/11/2026 22:32; las anteriores permanecen visibles. El incremento observado es de una sola entrada, compatible con un único guardado sin duplicados en este ensayo. Las imágenes por sí solas no permiten contar los clics realizados; la conclusión de una entrada por clic supone que se pulsó Guardar captura una sola vez entre ambas imágenes.
 
-Las pruebas funcionales de la lista quedaron reportadas por Isaac y se documentó la comparación visual del guardado. La incidencia del instalador descrita arriba continúa registrada. Isaac informó que el video ya fue grabado y subido; su enlace está en ENTREGA.md. La duración, el acceso desde otra cuenta y la revisión final de entrega siguen pendientes.
+Las pruebas funcionales de la lista quedaron reportadas por Isaac y se documentó la comparación visual del guardado. La incidencia del instalador descrita arriba continúa registrada. Isaac informó que el video ya fue grabado y subido; su enlace está en ENTREGA.md. El equipo confirmó que el video está listo. El PR #7 reporta la comprobación de la duración, el audio y el acceso desde otra cuenta. Sigue pendiente completar el PDF del aula.

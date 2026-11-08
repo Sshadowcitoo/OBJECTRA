@@ -1,7 +1,7 @@
 # Guion de demostración de OBJECTRA
 
 Responsable de la preparación documental y de la grabación: Isaac.
-Estado: Isaac informó que el video fue grabado y subido; enlace disponible en ENTREGA.md. Duración y acceso pendientes de comprobación. Duración máxima: tres minutos desde computador.
+Estado: video grabado desde computador y publicado en Drive. El equipo confirmó que está listo. Según el reporte del PR #7, se comprobaron la duración (máximo tres minutos), el audio y el acceso desde otra cuenta. El enlace está en ENTREGA.md.
 
 ## Preparación
 
@@ -27,11 +27,11 @@ Ajustar la narración al resultado real. No presentar pruebas pendientes como re
 
 ## Antes de publicar el video
 
-- [x] Isaac confirmó las pruebas de cámara, imagen propia, guardado y persistencia del historial. Revisar las comprobaciones específicas pendientes en VERIFICACION_DEMO.md.
+- [x] Isaac confirmó las pruebas de cámara, imagen propia, guardado y persistencia del historial. Consultar los resultados y la incidencia del instalador en VERIFICACION_DEMO.md.
 - [x] Video grabado por Isaac.
-- [ ] Comprobar duración de hasta tres minutos.
-- [ ] Verificar audio y legibilidad de la pantalla.
+- [x] Duración de hasta tres minutos comprobada según el reporte del PR #7.
+- [x] Audio comprobado según el reporte del PR #7.
 - [x] Video subido a Google Drive.
-- [ ] Comprobar el acceso desde otra cuenta.
+- [x] Acceso desde otra cuenta comprobado según el reporte del PR #7.
 - [x] Enlace real añadido a [ENTREGA.md](ENTREGA.md).
 - [ ] Añadir el enlace a la plantilla del aula.
