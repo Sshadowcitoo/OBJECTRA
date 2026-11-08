@@ -4,7 +4,7 @@ Aplicación web académica para detectar y segmentar objetos con la cámara o un
 
 ## Probar la demo en Windows
 
-Pide al equipo el paquete **OBJECTRA-Demo-Windows-EVA.zip**. El paquete incluye las tres exportaciones originales de EVA (320, 480 y 640) y un iniciador para Windows x64. La descarga pública en [GitHub Releases](https://github.com/Sshadowcitoo/OBJECTRA/releases) está pendiente.
+Descarga **OBJECTRA-Demo-Windows.zip** desde la [release v0.1.0-demo](https://github.com/Sshadowcitoo/OBJECTRA/releases/tag/v0.1.0-demo). El paquete incluye las tres exportaciones de EVA (320, 480 y 640) y un iniciador para Windows x64.
 
 1. Extrae el ZIP completo en una carpeta local donde puedas escribir.
 2. Haz doble clic en **Iniciar OBJECTRA.cmd**. El primer arranque requiere Internet y, si faltan componentes del sistema, WinGet. El iniciador prepara Python, las dependencias de la aplicación y PostgreSQL local según haga falta.
@@ -42,3 +42,17 @@ El script comprueba la conexión, aplica las migraciones pendientes y arranca Dj
 - **Subir imagen** analiza una foto propia. Puedes comparar el resultado y guardarlo.
 
 Consulta el [contrato de la API](docs/CONTRATO.md), la [guía de verificación](docs/VERIFICACION_BASE.md) y el [guion de demostración](docs/GUION_VIDEO.md). Mantén fuera de Git las credenciales, las bases locales, los entornos virtuales y los pesos.
+
+## Pruebas manuales
+
+Isaac confirmó en su computador el funcionamiento de la cámara y la detección de objetos, las tres calidades (Rápido, Equilibrado y Detalle), el ajuste de confianza, el guardado de una captura y su consulta en Historial. También confirmó que la cámara se apaga al pulsar **Detener**.
+
+Isaac también confirmó el análisis, comparación y guardado de una imagen propia; la persistencia del historial después de reiniciar; el arrastre del comparador; los controles de cajas y pantalla completa; el rechazo y reintento del permiso de cámara; y el comportamiento ante una escena sin objetos y un archivo inválido.
+
+Estos resultados corresponden al ensayo manual reportado por Isaac en su computador. El alcance y las comprobaciones específicas pendientes se detallan en la [verificación de la demo](docs/VERIFICACION_DEMO.md).
+
+## Entrega académica
+
+Video de demostración grabado y subido por Isaac: [OBJECTRA — Demostración funcional y pruebas del sistema](https://drive.google.com/file/d/1VlUZ9dLxV1Qq9Yt86QmBOE9MtSD1baBs/view?usp=sharing).
+
+El [documento de entrega](docs/ENTREGA.md) reúne la versión de la demo, los enlaces y los pendientes. El [guion narrado](docs/GUION_VIDEO.md) organiza una demostración de hasta tres minutos. Los [resultados de verificación de la demo](docs/VERIFICACION_DEMO.md) distinguen las comprobaciones realizadas de las pruebas manuales pendientes.
