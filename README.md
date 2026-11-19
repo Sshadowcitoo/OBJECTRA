@@ -12,6 +12,21 @@ Descarga **OBJECTRA-Demo-Windows.zip** desde la [release v0.1.0-demo](https://gi
 
 La verificación en una PC Windows limpia sigue pendiente. **Code → Download ZIP** descarga el código fuente. Para ejecutarlo, sigue las instrucciones de desarrollo de abajo. El [PR #6](https://github.com/Sshadowcitoo/OBJECTRA/pull/6) documenta el trabajo del instalador.
 
+## Instalador corregido desde el codigo fuente
+
+Esta revision incorpora los scripts del instalador a la rama de documentacion. Extrae o clona el proyecto completo; `setup-local.ps1` no se ejecuta como archivo aislado.
+
+```powershell
+.\setup-local.ps1 -ModelsSource "C:\ruta\models" -NoStart
+.\start-local.ps1
+```
+
+El primer comando prepara Python 3.13, las dependencias, los modelos y PostgreSQL local. Requiere Windows x64, Internet y WinGet cuando falten componentes. Si las tres exportaciones ya estan en `models/`, omite `-ModelsSource`. La descarga de PostgreSQL extrae solo `bin`, `lib` y `share`; excluye pgAdmin, cuya ruta larga produjo la incidencia documentada. La instancia privada usa el puerto 55432 y se inicia y detiene con `start-local.ps1` cuando este la arranca.
+
+Esta correccion del codigo fuente no reemplaza el ZIP de la release v0.1.0-demo. Sigue pendiente validar el primer arranque completo en una PC Windows limpia y regenerar el paquete publicado.
+
+Consulta el [manual tecnico y de usuario de la Unidad 4](docs/MANUAL_TECNICO_USUARIO.md). Los entregables 1 (codigo de pruebas) y 2 (reporte de pruebas) de esta nueva practica permanecen pendientes.
+
 ## Ejecutar desde el repositorio
 
 Requisitos de la configuración documentada para Windows: Python 3.13, PostgreSQL 14 o posterior, Git y las [tres exportaciones OpenVINO](models/README.md).

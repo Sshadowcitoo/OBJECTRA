@@ -33,3 +33,14 @@ La preparación documental se realizó con asistencia de Codex. Las comprobacion
 - [x] Acceso desde otra cuenta comprobado según el reporte del PR #7.
 - [ ] Otro integrante revisó los enlaces del pull request.
 - [ ] PDF completado conforme a la plantilla y fecha del aula.
+
+## Continuacion: practica Unidad 4
+
+- [x] Documentacion tecnica y de usuario redactada en `MANUAL_TECNICO_USUARIO.md`, con capturas existentes de la demostracion del equipo.
+- [x] Correccion del extractor de PostgreSQL en el codigo fuente: se excluye pgAdmin y se conservan solo bin, lib y share.
+- [ ] Entregable 1 de Unidad 4: revisar/completar las pruebas implementadas y su codigo para el informe.
+- [ ] Entregable 2 de Unidad 4: ejecutar y documentar las pruebas unitarias, de integracion y funcionales con evidencias actuales.
+- [ ] Probar la instalacion corregida en Windows limpio y actualizar la release.
+- [ ] Ajustar el documento a la plantilla vigente del aula, confirmar fecha limite y revision de todos los integrantes.
+
+Las confirmaciones del cierre anterior corresponden a la entrega de Unidad 3. No se trasladan como aprobacion de las pruebas de Unidad 4. La revision personal de Isaac y la revision grupal de enlaces siguen pendientes hasta confirmacion humana.

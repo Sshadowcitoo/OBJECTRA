@@ -20,9 +20,15 @@ La suite actual contiene 16 pruebas Django y dos pruebas JavaScript. Django veri
 
 ## Validación pendiente de la demo en Windows
 
-1. En una PC Windows x64 limpia, extraer `OBJECTRA-Demo-Windows-EVA.zip` y abrir **Iniciar OBJECTRA.cmd**.
+1. En una PC Windows x64 limpia, extraer `OBJECTRA-Demo-Windows.zip` y abrir **Iniciar OBJECTRA.cmd**.
 2. Comprobar que el iniciador prepara las dependencias y PostgreSQL. Abrir `http://127.0.0.1:8000/` y verificar las tres calidades con la misma imagen y con una cámara física.
 3. Guardar una captura, detener OBJECTRA, volver a iniciarlo y comprobar que la captura sigue en el historial.
 4. Registrar la versión de Windows, la fecha y el resultado antes de publicar el paquete.
 
 La primera inferencia de cada calidad incluye la carga y compilación del modelo. Para describir el rendimiento sostenido, registra tiempos de análisis posteriores.
+
+## Estado de la practica de Unidad 4 (19 de noviembre de 2026)
+
+El manual tecnico y de usuario se prepara en `MANUAL_TECNICO_USUARIO.md`. Los comandos anteriores y los resultados historicos no equivalen a una ejecucion nueva de la practica: los entregables 1 y 2 siguen pendientes por decision del equipo.
+
+El instalador corregido extrae solo los componentes PostgreSQL `bin`, `lib` y `share`, sin pgAdmin. Falta ejecutar el primer arranque en Windows limpio y reconstruir el ZIP de la release con los scripts corregidos. No registrar estos pasos como aprobados antes de realizarlos.
